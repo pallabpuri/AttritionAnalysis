@@ -12,3 +12,14 @@ Dependent Variable:	Retain_Indicator (Binary)  , 0 indicates employee retained a
 Business solution: 		 To build a Binomial Logistic Regression model 
 
 
+
+Post implementation of the Logistic Regression model, the result obtained is in the file saved as LogisticRegression.pdf.
+
+Here are the conclusions that we can derive:
+
+The p-value below 0.05 was for the variable ‘Employee_ID’
+Hence, ‘Employee_ID’ is the significant variable in the dataset.
+The slope of the significant variable ‘Employee_ID’ is 0.0443
+Hence, we can conclude that 1 unit of increase in Employee_ID increases the log odds of employee 
+retention by 0.04.
+The Cstatistic value for the model is 70.9%.  
