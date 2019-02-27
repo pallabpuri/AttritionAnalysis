@@ -1,0 +1,50 @@
+
+
+/* Import dataset for attrition analysis */
+
+FILENAME REFFILE '/home/pallabrajpuripp0/Pallab/Project 03_Attrition Analysis_Datasets.xlsx';
+
+PROC IMPORT DATAFILE=REFFILE
+	DBMS=XLSX
+	OUT=MyPrj.attritionanalysis;
+	GETNAMES=YES;
+RUN;
+
+/* View contents of the dataset */
+PROC CONTENTS DATA=MyPrj.attritionanalysis; 
+RUN;
+
+/* View Frequency of  attrition  (CHURN) */
+
+proc freq data=myprj.attritionanalysis;
+tables Retain_Indicator;
+run;
+/* Performing descriptive statistics for the dataset  */
+
+Proc means data=myprj.attritionanalysis;
+var Employee_ID;
+class Retain_Indicator;
+run;
+
+
+
+/* Perform Logistic expression */
+proc logistic data=myprj.attritionanalysis;
+model Retain_Indicator(event='1')= Employee_ID Sex_Indicator Relocation_Indicator Marital_Status / link=logit  technique=fisher;
+output out=myprj.attritionanalysisresult predicted=pred_ lower=lcl_ upper=upl_ / alpha=0.05;
+run;
+
+/*  Check Max and Min values for the probability of churn*/
+
+Proc means data=myprj.attritionanalysisresult min max;
+var pred_;
+run;
+
+/* Create a new dataset to add all churned employees above the cutoff value */
+data myprj.churnedcases;
+set myprj.attritionanalysisresult;
+if pred_ > 0.50;
+run;
+
+proc print data = myprj.churnedcases;
+
